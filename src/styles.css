@@ -1,3 +1,45 @@
-* {
-  background-color: #1a1d23;
+:root {
+  /* --- 主背景與層次 (Backgrounds) --- */
+  --bg-deep: #0f172a; /* 全域最底層背景 */
+  --bg-card: #1e293b; /* 卡片、區塊背景 */
+  --bg-nav: #111827; /* 導覽列、側邊欄背景 */
+  --bg-hover: #334155; /* 滑鼠懸停時的底色 */
+
+  /* --- 科技感強調色 (Accents) --- */
+  --primary-blue: #38bdf8; /* 標題、主要按鈕、霓虹光線 */
+  --primary-glow: rgba(56, 189, 248, 0.3); /* 藍色發光陰影 */
+
+  /* --- 語意狀態色 (Status) --- */
+  --status-live: #22c55e; /* 正常、在線、成功 (綠) */
+  --status-alert: #ef4444; /* 警報、衝突、錯誤 (紅) */
+  --status-pending: #f59e0b; /* 處理中、待定 (黃) */
+  --status-info: #6366f1; /* 一般資訊、配送中 (靛藍) */
+
+  /* --- 文字顏色 (Typography) --- */
+  --text-bright: #f8fafc; /* 重要標題、數據數值 (接近純白) */
+  --text-main: #e2e8f0; /* 一般內文 */
+  --text-muted: #94a3b8; /* 次要說明、時間戳、單位 (灰色) */
+
+  /* --- 裝飾與邊框 (Borders & Glass) --- */
+  --border-light: #334155; /* 一般區塊邊框 */
+  --glass-bg: rgba(30, 41, 59, 0.7); /* 玻璃擬態背景色 */
+  --glass-border: rgba(255, 255, 255, 0.1); /* 玻璃邊框微光 */
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-bright);
+  font-family: 'Inter', sans-serif; /* 建議使用這款字體，很有科技感 */
+}
+
+.card {
+  background: rgba(30, 41, 59, 0.7); /* 半透明 */
+  backdrop-filter: blur(10px); /* 背景模糊 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+h3 {
+  color: var(--text-main);
+  font-weight: normal;
 }
