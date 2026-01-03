@@ -1,9 +1,12 @@
-<section class="part-one">
-  <app-data-overview></app-data-overview>
-</section>
-<hr />
-<section class="part-two">
-  <app-activity-stream></app-activity-stream>
-  <app-fleet-tracking></app-fleet-tracking>
-  <app-analytics-insights></app-analytics-insights>
-</section>
+<div class="dashboard">
+  <section class="part-one">
+    <app-data-overview></app-data-overview>
+  </section>
+  <hr />
+  <section class="part-two">
+    <app-activity-stream class="activity"></app-activity-stream>
+    <app-fleet-tracking class="fleet"></app-fleet-tracking>
+    <app-analytics-insights class="analytics"></app-analytics-insights>
+    <app-resource-scheduler class="scheduler"></app-resource-scheduler>
+  </section>
+</div>

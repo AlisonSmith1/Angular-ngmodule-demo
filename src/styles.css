@@ -1,6 +1,5 @@
 :root {
   /* --- 主背景與層次 (Backgrounds) --- */
-  --bg-deep: #0f172a; /* 全域最底層背景 */
   --bg-card: #1e293b; /* 卡片、區塊背景 */
   --bg-nav: #111827; /* 導覽列、側邊欄背景 */
   --bg-hover: #334155; /* 滑鼠懸停時的底色 */
@@ -27,19 +26,44 @@
 }
 
 body {
-  background-color: var(--bg-deep);
+  background-color: var(--bg-card);
   color: var(--text-bright);
-  font-family: 'Inter', sans-serif; /* 建議使用這款字體，很有科技感 */
+  font-family: 'Inter', sans-serif;
+}
+
+h2,
+h3 {
+  color: var(--text-main);
+  font-weight: normal;
 }
 
 .card {
-  background: rgba(30, 41, 59, 0.7); /* 半透明 */
-  backdrop-filter: blur(10px); /* 背景模糊 */
+  width: 100%;
+  padding-left: 30px;
+  padding-bottom: 30px;
+  background-color: var(--bg-card);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
 }
 
-h3 {
-  color: var(--text-main);
-  font-weight: normal;
+.card1,
+.card2,
+.card4 {
+  padding-left: 30px;
+  padding-bottom: 30px;
+  background-color: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.card3 {
+  height: 300px;
+  padding-left: 30px;
+  padding-bottom: 30px;
+  background-color: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 }

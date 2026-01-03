@@ -1,0 +1,9 @@
+.dataOverview {
+  display: block;
+  padding: 20px;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 25px;
+}

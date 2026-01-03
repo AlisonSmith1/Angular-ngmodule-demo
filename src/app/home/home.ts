@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-home',
   standalone: false,
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrl: './home.scss',
 })
-export class Home {
-
-}
+export class Home {}

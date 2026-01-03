@@ -1,0 +1,14 @@
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-height: 100vh;
+  background-color: var(--bg-card);
+  padding: 0 24px;
+}
+
+app-navbar {
+  height: 75px;
+  width: 100%;
+}
