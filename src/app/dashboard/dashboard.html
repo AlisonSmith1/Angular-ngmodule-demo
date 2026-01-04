@@ -1,6 +1,6 @@
 <div class="dashboard">
   <section class="part-one">
-    <app-data-overview></app-data-overview>
+    <app-data-overview [data]="stats$ | async"></app-data-overview>
   </section>
   <hr />
   <section class="part-two">

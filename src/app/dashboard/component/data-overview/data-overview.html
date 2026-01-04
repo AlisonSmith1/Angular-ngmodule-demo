@@ -2,19 +2,19 @@
   <h2>DATA OVERVIEW</h2>
   <div class="cardContainer">
     <div class="card">
-      <h1>1,245</h1>
+      <h1>{{ data?.totalOrders }}</h1>
       <p>Total Orders Today</p>
     </div>
     <div class="card">
-      <h1>98</h1>
+      <h1>{{ data?.driversEnRoute }}</h1>
       <p>Drivers En Route</p>
     </div>
     <div class="card">
-      <h1>3</h1>
+      <h1>{{ data?.pendingAlerts }}</h1>
       <p>Pending Alerts</p>
     </div>
     <div class="card">
-      <h1>Avg. Deli</h1>
+      <h1>{{ data?.avgDeliveryTime }}</h1>
       <p>Avg. Delivery Time</p>
     </div>
   </div>

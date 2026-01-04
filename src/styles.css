@@ -1,7 +1,7 @@
 :root {
   /* --- 主背景與層次 (Backgrounds) --- */
-  --bg-card: #1e293b; /* 卡片、區塊背景 */
-  --bg-nav: #111827; /* 導覽列、側邊欄背景 */
+  --bg-card: #252930; /* 卡片、區塊背景 */
+  --bg-nav: #1e2023; /* 導覽列、側邊欄背景 */
   --bg-hover: #334155; /* 滑鼠懸停時的底色 */
 
   /* --- 科技感強調色 (Accents) --- */
@@ -31,6 +31,7 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+h1,
 h2,
 h3 {
   color: var(--text-main);
@@ -38,32 +39,56 @@ h3 {
 }
 
 .card {
+  position: relative;
   width: 100%;
-  padding-left: 30px;
-  padding-bottom: 30px;
+  padding: 30px;
   background-color: var(--bg-card);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 15px;
+
+  z-index: 0;
 }
 
-.card1,
+.card1 {
+  position: relative;
+  padding: 30px;
+  background-color: var(--bg-card);
+  border: 2px solid var(--glass-border);
+  border-radius: 15px;
+}
+
 .card2,
 .card4 {
-  padding-left: 30px;
-  padding-bottom: 30px;
+  position: relative;
+  padding: 30px;
   background-color: var(--bg-card);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 15px;
+  z-index: 0;
 }
 
 .card3 {
-  height: 300px;
-  padding-left: 30px;
-  padding-bottom: 30px;
+  height: 800px;
+  position: relative;
+  padding: 30px;
   background-color: var(--bg-card);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border: 2px solid var(--glass-border);
+  border-radius: 15px;
+}
+
+.card::before,
+.card2::before,
+.card4::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  padding: 1px;
+  background: linear-gradient(90deg, var(--primary-blue), var(--primary-glow));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  z-index: -1;
 }
