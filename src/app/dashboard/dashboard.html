@@ -5,7 +5,7 @@
   <hr />
   <section class="part-two">
     <app-activity-stream class="activity"></app-activity-stream>
-    <app-fleet-tracking class="fleet"></app-fleet-tracking>
+    <app-fleet-tracking [locations]="driver$ | async" class="fleet"></app-fleet-tracking>
     <app-analytics-insights class="analytics"></app-analytics-insights>
     <app-resource-scheduler class="scheduler"></app-resource-scheduler>
   </section>

@@ -1,3 +1,21 @@
-<div class="fleetTracking">
-  <div class="card2"><h3>FLEET & ASSET TRACKIG</h3></div>
+<div class="fleet-tracking">
+  <div class="card2">
+    <div class="fleet-tracking">
+      <div class="header-section">
+        <h3>FLEET & ASSET TRACKING</h3>
+        <div class="badge">LIVE</div>
+      </div>
+
+      <google-map height="100%" width="100%" [center]="center" [zoom]="zoom" [options]="mapOptions">
+        @for (driver of locations; track driver.id) {
+        <map-marker
+          [position]="{ lat: driver.lat, lng: driver.lng }"
+          [title]="driver.driverName"
+          [options]="getMarkerOptions(driver.status)"
+        >
+        </map-marker>
+        }
+      </google-map>
+    </div>
+  </div>
 </div>

@@ -1,5 +1,6 @@
 :root {
   /* --- 主背景與層次 (Backgrounds) --- */
+  --bg-dark: #12151a;
   --bg-card: #252930; /* 卡片、區塊背景 */
   --bg-nav: #1e2023; /* 導覽列、側邊欄背景 */
   --bg-hover: #334155; /* 滑鼠懸停時的底色 */
@@ -57,7 +58,25 @@ h3 {
   border-radius: 15px;
 }
 
-.card2,
+.card2 {
+  position: relative;
+  padding: 30px;
+  background: #12151a;
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  z-index: 0;
+  height: 100%;
+}
+
+.card3 {
+  height: 1000px;
+  position: relative;
+  padding: 30px;
+  background-color: var(--bg-card);
+  border: 2px solid var(--glass-border);
+  border-radius: 15px;
+}
+
 .card4 {
   position: relative;
   padding: 30px;
@@ -65,15 +84,6 @@ h3 {
   backdrop-filter: blur(10px);
   border-radius: 15px;
   z-index: 0;
-}
-
-.card3 {
-  height: 800px;
-  position: relative;
-  padding: 30px;
-  background-color: var(--bg-card);
-  border: 2px solid var(--glass-border);
-  border-radius: 15px;
 }
 
 .card::before,

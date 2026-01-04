@@ -1,4 +1,3 @@
-// src/app/core/models/dashboard.model.ts
 export interface DashboardStats {
   totalOrders: number;
   driversEnRoute: number;
