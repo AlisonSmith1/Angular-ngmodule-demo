@@ -24,6 +24,12 @@
   --border-light: #334155; /* 一般區塊邊框 */
   --glass-bg: rgba(30, 41, 59, 0.7); /* 玻璃擬態背景色 */
   --glass-border: rgba(255, 255, 255, 0.1); /* 玻璃邊框微光 */
+
+  /* 滾輪 */
+  --scrollbar-bg: rgba(0, 243, 255, 0.2);
+  --scrollbar-thumb: rgba(0, 243, 255, 0.8);
+  --scrollbar-thu: rgba(0, 243, 255, 0.2);
+  --scrollbar-shadow: rgba(0, 243, 255, 0.4);
 }
 
 body {
@@ -51,6 +57,11 @@ h3 {
 }
 
 .card1 {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: relative;
   padding: 30px;
   background-color: var(--bg-card);
@@ -65,11 +76,10 @@ h3 {
   backdrop-filter: blur(10px);
   border-radius: 15px;
   z-index: 0;
-  height: 100%;
 }
 
 .card3 {
-  height: 1000px;
+  height: 700px;
   position: relative;
   padding: 30px;
   background-color: var(--bg-card);

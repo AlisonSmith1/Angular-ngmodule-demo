@@ -1,55 +1,52 @@
-// src/app/core/services/mock-data.service.ts
+// src/app/core/services/dashboard.service.ts
 import { Injectable } from '@angular/core';
-import { interval, map, Observable, startWith } from 'rxjs';
+import { interval, map, Observable, startWith, shareReplay, Subject, scan } from 'rxjs';
 import { DashboardStats, ActivityLog } from '../models/dashboard.model';
 import { DRIVER_DATA } from '../../data/driver';
 import { ACTIVITY_MESSAGES } from '../../data/activity';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  // 模擬頂部統計數據
-  getStats(): Observable<DashboardStats> {
-    return interval(5000).pipe(
-      startWith(0),
-      map(() => {
-        const activeCount = DRIVER_DATA.filter((d) => d.status === 'active').length;
-        const totalOrders = Math.floor(activeCount * Math.random() * 10);
-        const driversEnRoute = activeCount;
-        const avgDeliveryTime =
-          DRIVER_DATA.reduce((sum, d) => sum + d.speed, 0) / DRIVER_DATA.length;
+  // 共享事件
+  private activityStream$ = interval(5000).pipe(
+    startWith(0),
+    map(() => {
+      const randomDriver = DRIVER_DATA[Math.floor(Math.random() * DRIVER_DATA.length)];
+      const eventTemplate = ACTIVITY_MESSAGES[Math.floor(Math.random() * ACTIVITY_MESSAGES.length)];
 
-        let pendingAlerts = totalOrders - driversEnRoute;
-        if (pendingAlerts < 0) {
-          pendingAlerts = 0;
-        }
+      return {
+        id: `${randomDriver.id}-${Date.now()}`,
+        timestamp: new Date(),
+        type: eventTemplate.type || 'info',
+        message: `[${randomDriver.vehicleId}] ${randomDriver.driverName}，${eventTemplate.message}`,
+        actor: '系統中心',
 
-        return {
-          totalOrders,
-          driversEnRoute,
-          pendingAlerts,
-          avgDeliveryTime,
-        };
-      })
-    );
+        driverId: randomDriver.id,
+      } as ActivityLog;
+    }),
+    shareReplay(1)
+  );
+
+  // ActivityStream日誌
+  getActivityStream(): Observable<ActivityLog> {
+    return this.activityStream$;
   }
 
-  // 模擬即時活動日誌
-  getActivityStream(): Observable<ActivityLog> {
-    return interval(10000).pipe(
-      startWith(0),
-      map(() => {
-        // 💡 確保這裡的 type 存在於介面的聯合型別中
-        const types: ActivityLog['type'][] = ['info', 'warning', 'danger', 'success'];
-        const randomDriver = DRIVER_DATA[Math.floor(Math.random() * DRIVER_DATA.length)];
-        const eventTemplate =
-          ACTIVITY_MESSAGES[Math.floor(Math.random() * ACTIVITY_MESSAGES.length)];
+  // 上方card片的數據
+  getStats(): Observable<DashboardStats> {
+    return this.activityStream$.pipe(
+      map((latestLog) => {
+        const activeCount = DRIVER_DATA.filter((d) => d.status === 'active').length;
+
+        const alertModifier = latestLog.type === 'danger' ? 12 : 5;
+
+        const avgDeliveryTime = latestLog.type === 'warning' ? 30 : 25;
 
         return {
-          id: `${randomDriver.id}-${Date.now()}`,
-          timestamp: new Date(),
-          type: eventTemplate.type || 'info',
-          message: `[${randomDriver.vehicleId}] ${randomDriver.driverName}，${eventTemplate.message}`,
-          actor: '系統中心',
+          totalOrders: 150,
+          driversEnRoute: activeCount,
+          pendingAlerts: alertModifier,
+          avgDeliveryTime: avgDeliveryTime,
         };
       })
     );

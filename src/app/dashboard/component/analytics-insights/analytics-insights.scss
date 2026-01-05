@@ -1,0 +1,16 @@
+.analyticInsights {
+  display: block;
+  .value {
+    font-size: 1.5rem;
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); /* 亮霧發光 */
+  }
+
+  .ai-recommendation {
+    background: rgba(56, 189, 248, 0.05);
+    border-left: 3px solid #38bdf8;
+    padding: 10px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+}

@@ -19,7 +19,7 @@ export class ActivityStream implements OnInit, OnDestroy {
     this.subscription = this.dashboardService.getActivityStream().subscribe((newLog) => {
       this.logs.unshift(newLog);
 
-      if (this.logs.length > 8) {
+      if (this.logs.length > 19) {
         this.logs.pop();
       }
     });
