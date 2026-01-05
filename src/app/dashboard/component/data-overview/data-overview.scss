@@ -6,3 +6,18 @@
   display: flex;
   gap: 25px;
 }
+
+h1 {
+  color: var(--text-bright);
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.is-danger {
+  border: 1px solid rgba(255, 77, 77, 0.5);
+
+  h1 {
+    color: #ff4d4d;
+    text-shadow: 0 0 10px rgba(255, 77, 77, 0.3);
+  }
+}

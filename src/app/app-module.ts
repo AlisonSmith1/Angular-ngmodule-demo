@@ -13,6 +13,8 @@ import { FleetTracking } from './dashboard/component/fleet-tracking/fleet-tracki
 import { AnalyticsInsights } from './dashboard/component/analytics-insights/analytics-insights';
 import { Contact } from './contact/contact';
 import { ResourceScheduler } from './dashboard/component/resource-scheduler/resource-scheduler';
+import { environment } from './environments/environment';
+import { provideHttpClient, withJsonpSupport } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,11 @@ import { ResourceScheduler } from './dashboard/component/resource-scheduler/reso
     ResourceScheduler,
   ],
   imports: [BrowserModule, AppRoutingModule, GoogleMapsModule],
-  providers: [provideBrowserGlobalErrorListeners()],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withJsonpSupport()),
+    { provide: 'GOOGLE_MAPS_API_KEY', useValue: environment.googleApiKey },
+  ],
   bootstrap: [App],
 })
 export class AppModule {}

@@ -9,10 +9,13 @@
       <h1>{{ data?.driversEnRoute }}</h1>
       <p>Drivers En Route</p>
     </div>
-    <div class="card">
-      <h1>{{ data?.pendingAlerts }}</h1>
+
+    @if (data) {
+    <div class="card" [class.is-danger]="data.pendingAlerts > 10">
+      <h1>{{ data.pendingAlerts }}</h1>
       <p>Pending Alerts</p>
     </div>
+    }
     <div class="card">
       <h1>{{ data?.avgDeliveryTime }}</h1>
       <p>Avg. Delivery Time</p>

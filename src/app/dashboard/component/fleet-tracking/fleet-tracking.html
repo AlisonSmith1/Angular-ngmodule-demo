@@ -1,21 +1,24 @@
-<div class="fleet-tracking">
-  <div class="card2">
-    <div class="fleet-tracking">
-      <div class="header-section">
-        <h3>FLEET & ASSET TRACKING</h3>
-        <div class="badge">LIVE</div>
-      </div>
+<div class="card2">
+  <div class="fleet-tracking">
+    <div class="header-section">
+      <h3>FLEET & ASSET TRACKING</h3>
+      <div class="badge">LIVE</div>
+    </div>
 
+    <div class="map-container">
+      @if (apiLoaded$ | async) {
       <google-map height="100%" width="100%" [center]="center" [zoom]="zoom" [options]="mapOptions">
         @for (driver of locations; track driver.id) {
-        <map-marker
+        <map-advanced-marker
           [position]="{ lat: driver.lat, lng: driver.lng }"
-          [title]="driver.driverName"
-          [options]="getMarkerOptions(driver.status)"
+          [options]="getAdvancedMarkerOptions(driver.status)"
         >
-        </map-marker>
+        </map-advanced-marker>
         }
       </google-map>
+      } @else {
+      <div class="map-loading">Radar System Initializing...</div>
+      }
     </div>
   </div>
 </div>
