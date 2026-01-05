@@ -5,6 +5,14 @@ function getRandomStatus(): 'active' | 'warning' | 'idle' {
   return statuses[Math.floor(Math.random() * statuses.length)];
 }
 
+function getRandomSpeed(): number {
+  return 40 + Math.floor(Math.random() * 20);
+}
+
+function lastUpdatedDate(): Date {
+  return new Date();
+}
+
 export const DRIVER_DATA: DriverLocation[] = [
   {
     id: 'DRV-001',
@@ -13,8 +21,8 @@ export const DRIVER_DATA: DriverLocation[] = [
     lat: 25.033,
     lng: 121.5654,
     status: getRandomStatus(),
-    lastUpdated: new Date('2026-01-04T20:28:00Z'),
-    speed: 45,
+    lastUpdated: lastUpdatedDate(),
+    speed: getRandomSpeed(),
   },
   {
     id: 'DRV-002',
@@ -23,8 +31,8 @@ export const DRIVER_DATA: DriverLocation[] = [
     lat: 25.053,
     lng: 121.5454,
     status: getRandomStatus(),
-    lastUpdated: new Date('2026-01-04T20:28:00Z'),
-    speed: 40,
+    lastUpdated: lastUpdatedDate(),
+    speed: getRandomSpeed(),
   },
   {
     id: 'DRV-003',
@@ -33,8 +41,8 @@ export const DRIVER_DATA: DriverLocation[] = [
     lat: 25.043,
     lng: 121.5488,
     status: getRandomStatus(),
-    lastUpdated: new Date('2026-01-04T20:28:00Z'),
-    speed: 50,
+    lastUpdated: lastUpdatedDate(),
+    speed: getRandomSpeed(),
   },
   {
     id: 'DRV-004',
@@ -43,8 +51,8 @@ export const DRIVER_DATA: DriverLocation[] = [
     lat: 25.111,
     lng: 121.5,
     status: getRandomStatus(),
-    lastUpdated: new Date('2026-01-04T20:28:00Z'),
-    speed: 46,
+    lastUpdated: lastUpdatedDate(),
+    speed: getRandomSpeed(),
   },
   {
     id: 'DRV-005',
@@ -53,7 +61,7 @@ export const DRIVER_DATA: DriverLocation[] = [
     lat: 25.0,
     lng: 121.4114,
     status: getRandomStatus(),
-    lastUpdated: new Date('2026-01-04T20:28:00Z'),
-    speed: 33,
+    lastUpdated: lastUpdatedDate(),
+    speed: getRandomSpeed(),
   },
 ];

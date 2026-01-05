@@ -1,4 +1,26 @@
-<div class="activityStream">
-  <h2>LIVE ACTIVITY STREAM</h2>
-  <div class="card1"></div>
+<div class="activity-stream">
+  <div class="header">
+    <h2>LIVE ACTIVITY STREAM</h2>
+    <div class="live-dot"></div>
+  </div>
+  <div class="card1">
+    <div class="stream-container">
+      @for (log of logs; track log.id) {
+      <div class="log-item" [class]="log.type">
+        <div class="timeline-line"></div>
+        <div class="status-marker"></div>
+
+        <div class="log-info">
+          <div class="log-header">
+            <span class="actor">{{ log.actor }}</span>
+            <span class="time">{{ log.timestamp }}</span>
+          </div>
+          <p class="message">{{ log.message }} - {{ log.id }}</p>
+        </div>
+      </div>
+      } @empty {
+      <div class="empty-state">監測系統啟動中...</div>
+      }
+    </div>
+  </div>
 </div>

@@ -1,0 +1,152 @@
+/* activity-stream.scss */
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.activity-stream {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+
+    h2 {
+      font-size: 0.9rem;
+      color: var(--text-bright, #fff);
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #ff4d4d;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #ff4d4d;
+      animation: blink 1.5s infinite;
+    }
+  }
+
+  .card1 {
+    flex: 1;
+    background: var(--bg-card, rgba(255, 255, 255, 0.03));
+    border-radius: 12px;
+    padding: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .stream-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+
+    /* 美化捲軸 */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .log-item {
+      display: flex;
+      gap: 15px;
+      position: relative;
+      padding-bottom: 24px;
+
+      /* 垂直時間軸線 */
+      .timeline-line {
+        position: absolute;
+        left: 4px;
+        top: 15px;
+        bottom: 0;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* 最後一個項目不顯示連線 */
+      &:last-child .timeline-line {
+        display: none;
+      }
+
+      .status-marker {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-top: 6px;
+        z-index: 2;
+        background: #888;
+        flex-shrink: 0;
+      }
+
+      /* 根據 type 切換顏色 */
+      &.info .status-marker {
+        background: #00f3ff;
+        box-shadow: 0 0 8px #00f3ff;
+      }
+      &.success .status-marker {
+        background: #4ade80;
+        box-shadow: 0 0 8px #4ade80;
+      }
+      &.warning .status-marker {
+        background: #fbbf24;
+        box-shadow: 0 0 8px #fbbf24;
+      }
+      &.danger .status-marker {
+        background: #f87171;
+        box-shadow: 0 0 8px #f87171;
+      }
+
+      .log-info {
+        flex: 1;
+        .log-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 4px;
+
+          .actor {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-blue, #00f3ff);
+          }
+
+          .time {
+            font-size: 0.7rem;
+            color: var(--text-muted, #888);
+          }
+        }
+
+        .message {
+          margin: 0;
+          font-size: 0.85rem;
+          color: #d1d5db;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}

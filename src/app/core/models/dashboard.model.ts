@@ -7,7 +7,8 @@ export interface DashboardStats {
 
 export interface ActivityLog {
   id: string;
-  time: string;
-  status: 'online' | 'warning' | 'error';
+  timestamp: Date;
+  type: 'info' | 'warning' | 'danger' | 'success';
   message: string;
+  actor?: string;
 }
