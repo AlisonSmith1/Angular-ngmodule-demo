@@ -99,17 +99,25 @@ app-root ------------> app-home
                                                                                         \ -----> app-resource-scheduler
 
 
-models
+[models]
     \
      \ ---> dashcoard
       \ ---> fleet
        \ ---> activity
 
-services
+[services]
     \
-     \ ---> dashcoard
-      \ ---> fleet
-       \ ---> activity
-
-
+     \ -------------------------------------> [dashcoard]
+      \                                            \ private activityStream$
+       \ ---> [fleet] return this.dashboardService  \ return id,timestamp,type,message,actor,driverId
+        \        \ getLiveDriverLocations()          \ ACTIVITY_MESSAGES:type,message
+         \             return this.dashboardService   \ DRIVER_DATA:id,driverName,vehicleId,lat,lng,status,lastUpdate,speed
+          \ ---> [analytic]                            \
+                      \                                 \ -----------------------> getActivityStream() return this.activityStream$ -> activityStream
+                       \ private formatAnalyticData()    \ getStats() return this.activityStream$.pipe -> dataOverview
+                        \ getEfficiencyStats$()                 \
+                         \      return this.dashboardService     \ totalOrders
+                          \ getAiRecommendation$()                \ driverEnRoute
+                                                                   \ pendingAlerts
+                                                                    \ avgDeliveryTime
 ```
