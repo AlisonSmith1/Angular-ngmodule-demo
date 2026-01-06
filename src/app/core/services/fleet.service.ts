@@ -26,15 +26,6 @@ export class FleetService {
             };
           }
 
-          if (driver.id === latestLog.driverId) {
-            if (latestLog.type === 'danger') {
-              return { ...driver, status: 'warning' };
-            }
-            if (latestLog.type === 'success') {
-              return { ...driver, status: 'active' };
-            }
-          }
-
           return driver;
         });
 

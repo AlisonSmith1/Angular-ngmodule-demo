@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable, map, shareReplay } from 'rxjs';
 import { AnalyticService } from '../../../core/services/analytic.service';
-import { AnalyticData } from '../../../core/models/analytic.mode';
+import { AnalyticData } from '../../../core/models/analytic.model';
 
 @Component({
   selector: 'app-analytics-insights',

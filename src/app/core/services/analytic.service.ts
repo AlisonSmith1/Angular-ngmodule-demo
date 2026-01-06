@@ -1,31 +1,32 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, scan, shareReplay, startWith } from 'rxjs';
 
 import { FleetService } from './fleet.service';
 import { AnalyticData } from '../models/analytic.model'; // 模型
+import { DashboardService } from './dashboard.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnalyticService {
   private history: number[] = [];
+  private readonly INITIAL_SCORE = 92.4;
 
-  constructor(private fleetService: FleetService) {}
+  constructor(private fleetService: FleetService, private dashboardService: DashboardService) {}
 
-  private calculateEfficiency(avgSpeed: number, alertsCount: number = 0): AnalyticData {
-    const baseScore = 100;
-    const speedPenalty = avgSpeed < 30 ? (30 - avgSpeed) * 2 : 0;
-    const alertPenalty = alertsCount * 5;
-    const currentScore = Math.max(0, baseScore - speedPenalty - alertPenalty);
-
+  private formatAnalyticData(currentScore: number): AnalyticData {
     this.history.push(currentScore);
     if (this.history.length > 20) this.history.shift();
 
+    const prev =
+      this.history.length > 1 ? this.history[this.history.length - 2] : this.INITIAL_SCORE;
+    const diff = currentScore - prev;
+
     return {
       score: Number(currentScore.toFixed(1)),
-      previousScore: 90.0,
-      trendPercentage: 4.2,
-      isUpward: currentScore >= 90,
+      previousScore: Number(prev.toFixed(1)),
+      trendPercentage: Number(Math.abs(diff).toFixed(1)),
+      isUpward: diff >= 0,
       status: currentScore > 85 ? 'optimal' : currentScore > 60 ? 'warning' : 'critical',
       lastUpdated: new Date(),
       chartData: [...this.history],
@@ -33,20 +34,29 @@ export class AnalyticService {
   }
 
   getEfficiencyStats$(): Observable<AnalyticData> {
-    return this.fleetService.getLiveDriverLocations().pipe(
-      map((drivers) => {
-        const totalSpeed = drivers.reduce((sum, d) => sum + (d.speed || 0), 0);
-        const avgSpeed = drivers.length > 0 ? totalSpeed / drivers.length : 0;
-        const alertsCount = drivers.filter((d) => d.status === 'warning').length;
+    return this.dashboardService.getActivityStream().pipe(
+      scan((accScore, log) => {
+        let newScore = accScore;
+        if (log.type === 'danger') {
+          newScore -= 5;
+        } else if (log.type === 'success') {
+          newScore += 3;
+        } else {
+          newScore += newScore < 95 ? 0.2 : -0.1;
+        }
+        return Math.min(100, Math.max(60, newScore));
+      }, this.INITIAL_SCORE),
 
-        return this.calculateEfficiency(avgSpeed, alertsCount);
-      })
+      map((finalScore) => this.formatAnalyticData(finalScore)),
+
+      startWith(this.formatAnalyticData(this.INITIAL_SCORE)),
+      shareReplay(1)
     );
   }
 
   getAiRecommendation$(stats: AnalyticData): string {
-    if (stats.status === 'critical') return '警告：區域效率極低，請立即檢核調度狀態。';
-    if (stats.status === 'warning') return '提示：平均時速下降，建議檢查交通流量。';
-    return '營運狀況理想，目前車隊效率符合預期。';
+    if (stats.status === 'critical') return '警告：區域發生多起異常事件，系統效率大幅下降。';
+    if (stats.status === 'warning') return '注意：事件處理頻率不穩定，建議監控異常點。';
+    return '營運狀況理想，事件修復率良好，系統處於高效率狀態。';
   }
 }

@@ -26,14 +26,12 @@
     }
 
     @keyframes pulse {
-      0% {
+      0%,
+      100% {
         opacity: 0.8;
       }
       50% {
         opacity: 1;
-      }
-      100% {
-        opacity: 0.8;
       }
     }
   }
@@ -49,4 +47,94 @@
   height: 100% !important;
   width: 100% !important;
   min-height: 380px !important;
+}
+
+::ng-deep .gm-style-iw-c {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+::ng-deep .gm-style-iw-d {
+  overflow: visible !important;
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(12px) !important;
+
+  border-radius: 12px;
+  padding: 0 !important;
+}
+
+/* 💡 隱藏下方白色小箭頭 (或使其透明) */
+::ng-deep .gm-style-iw-tc::after {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: none !important;
+}
+
+/* 💡 關閉按鈕重新定位與美化 */
+::ng-deep .gm-ui-hover-effect {
+  top: 8px !important;
+  right: 8px !important;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.map-info-card {
+  padding: 16px;
+  padding-top: 28px;
+  background: transparent;
+  min-width: 180px;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(69, 68, 68, 0.5);
+    padding-bottom: 8px;
+
+    .driver-name {
+      color: #000000;
+
+      font-size: 1.1rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      &.active {
+        background: #38bdf8;
+        box-shadow: 0 0 8px #38bdf8;
+      }
+      &.warning {
+        background: #f87171;
+        box-shadow: 0 0 8px #f87171;
+      }
+      &.idle {
+        background: #fbbf24;
+      }
+    }
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 6px 0;
+    font-size: 0.85rem;
+
+    .label {
+      color: #414243;
+    }
+    .val {
+      color: #414243;
+      font-weight: 500;
+      font-family: 'Roboto Mono', monospace;
+    }
+  }
 }
