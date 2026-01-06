@@ -83,20 +83,20 @@ src/
 
 ```text
 
-app-root -----------------> app-home
-    \                          \
-     \--> router-outlet         \ --------------> app-navbar
-                                 \                   \ ------------------------> app-dashboard
-                                  \                   \                             \
-                                   \                   \ --> app-contact             \ -----> add-data-overview
-                                    \ --> router-outlet                               \
-                                                                                       \ -----> app-activity-stream
-                                                                                        \
-                                                                                         \ -----> app-fleet-tracking
-                                                                                          \
-                                                                                           \ -----> app-analytics-insights
-                                                                                            \
-                                                                                             \ -----> app-resource-scheduler
+app-root ------------> app-home
+    \                     \
+     \--> router-outlet    \ --------------> app-navbar
+                            \                   \ ------------------------> app-dashboard
+                             \                   \                             \
+                              \                   \ --> app-contact             \ -----> add-data-overview
+                               \ --> router-outlet                               \
+                                                                                  \ -----> app-activity-stream
+                                                                                   \
+                                                                                    \ -----> app-fleet-tracking
+                                                                                     \
+                                                                                      \ -----> app-analytics-insights
+                                                                                       \
+                                                                                        \ -----> app-resource-scheduler
 
 
 models
