@@ -1,9 +1,9 @@
-// src/app/core/services/dashboard.service.ts
 import { Injectable } from '@angular/core';
 import { interval, map, Observable, startWith, shareReplay, Subject, scan } from 'rxjs';
-import { DashboardStats, ActivityLog } from '../models/dashboard.model';
-import { DRIVER_DATA } from '../../data/driver';
-import { ACTIVITY_MESSAGES } from '../../data/activity';
+
+import { DashboardStats, ActivityLog } from '../models/dashboard.model'; // 模型
+import { DRIVER_DATA } from '../../data/driver'; // 初始資料
+import { ACTIVITY_MESSAGES } from '../../data/activity'; // 初始資料
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {

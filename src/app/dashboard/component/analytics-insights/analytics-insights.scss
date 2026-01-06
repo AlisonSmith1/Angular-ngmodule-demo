@@ -1,9 +1,34 @@
 .analyticInsights {
   display: block;
+
   .value {
     font-size: 1.5rem;
     color: #38bdf8;
-    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); /* 亮霧發光 */
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+
+    &.optimal {
+      color: #38bdf8;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+    }
+    &.warning {
+      color: #fbbf24;
+      text-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+    }
+    &.critical {
+      color: #f87171;
+      text-shadow: 0 0 15px rgba(248, 113, 113, 0.6);
+    }
+  }
+
+  .trend {
+    font-size: 0.9rem;
+    margin-left: 10px;
+    &.up {
+      color: #4ade80;
+    }
+    &.down {
+      color: #f87171;
+    }
   }
 
   .ai-recommendation {
@@ -12,5 +37,10 @@
     padding: 10px;
     font-size: 0.8rem;
     color: var(--text-muted);
+  }
+
+  &.critical {
+    background: rgba(248, 113, 113, 0.05);
+    border-left-color: #f87171;
   }
 }

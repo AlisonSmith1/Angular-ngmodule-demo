@@ -1,12 +1,16 @@
 <div class="analyticInsights">
   <h3>ANALYTICS & INSIGHTS</h3>
-  <span class="tag">REAL-TIME</span>
+  <span class="tag" [class.syncing]="true">REAL-TIME</span>
+
   <div class="card3">
+    @if (stats$ | async; as data) {
     <div class="insight-card">
       <div class="metric">
         <span class="label">Efficiency Score</span>
-        <span class="value">92.4</span>
-        <span class="trend up">↑ 4.2%</span>
+        <span class="value" [class]="data.status">{{ data.score }}</span>
+        <span class="trend" [class.up]="data.isUpward" [class.down]="!data.isUpward">
+          {{ data.isUpward ? '↑' : '↓' }} {{ data.trendPercentage }}%
+        </span>
       </div>
 
       <div class="mini-chart">
@@ -15,10 +19,13 @@
 
       <hr class="misty-line" />
 
-      <div class="ai-recommendation">
+      <div class="ai-recommendation" [class]="data.status">
         <i class="ai-icon"></i>
-        <p>AI Suggestion: Fleet speed in Zone A is optimal. No action required.</p>
+        <p>{{ recommendation$ | async }}</p>
       </div>
     </div>
+    } @else {
+    <div class="loading-overlay">正在分析神經網路數據...</div>
+    }
   </div>
 </div>

@@ -1,8 +1,9 @@
 // src/app/core/services/fleet.service.ts
 import { Injectable } from '@angular/core';
 import { Observable, map, startWith } from 'rxjs';
-import { DriverLocation } from '../models/fleet.model';
-import { DRIVER_DATA } from '../../data/driver';
+
+import { DriverLocation } from '../models/fleet.model'; // 模型
+import { DRIVER_DATA } from '../../data/driver'; // 初始資料
 import { DashboardService } from './dashboard.service';
 
 @Injectable({ providedIn: 'root' })
@@ -26,10 +27,12 @@ export class FleetService {
           }
 
           if (driver.id === latestLog.driverId) {
-            return {
-              ...driver,
-              status: latestLog.type === 'danger' ? 'warning' : driver.status,
-            };
+            if (latestLog.type === 'danger') {
+              return { ...driver, status: 'warning' };
+            }
+            if (latestLog.type === 'success') {
+              return { ...driver, status: 'active' };
+            }
           }
 
           return driver;
