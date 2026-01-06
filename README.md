@@ -111,15 +111,15 @@ app-root ------------> app-home
     \
      \ -------------------------------------> [dashcoard]
       \                                            \ private activityStream$
-       \ ---> [fleet] return this.dashboardService  \ return id,timestamp,type,message,actor,driverId
+       \ ---> [fleet] return this.dashboardService  \ #return id,timestamp,type,message,actor,driverId
         \        \ getLiveDriverLocations()          \ ACTIVITY_MESSAGES:type,message
          \             return this.dashboardService   \ DRIVER_DATA:id,driverName,vehicleId,lat,lng,status,lastUpdate,speed
           \ ---> [analytic]                            \
                       \                                 \ -----------------------> getActivityStream() return this.activityStream$ -> activityStream
-                       \ private formatAnalyticData()    \ getStats() return this.activityStream$.pipe -> dataOverview
-                        \ getEfficiencyStats$()                 \
-                         \      return this.dashboardService     \ totalOrders
-                          \ getAiRecommendation$()                \ driverEnRoute
-                                                                   \ pendingAlerts
+  #return score, <-----\ private formatAnalyticData()    \ getStats() return this.activityStream$.pipe -> dataOverview
+  previousScore,        \ getEfficiencyStats$()                 \
+  trendPercentage,       \      return this.dashboardService     \ totalOrders
+  isUpward,status,        \ getAiRecommendation$()                \ driverEnRoute
+  lastUpdated,chartData                                            \ pendingAlerts
                                                                     \ avgDeliveryTime
 ```
