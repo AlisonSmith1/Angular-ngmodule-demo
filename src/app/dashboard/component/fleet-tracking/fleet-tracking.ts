@@ -24,8 +24,9 @@ import { MapInfoWindow, MapAdvancedMarker } from '@angular/google-maps';
 })
 export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
   @Input() locations: DriverLocation[] | null = [];
-
+  // Google Maps InfoWindow 元件
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
+  // Google Maps AdvancedMarker 元件列表
   @ViewChildren(MapAdvancedMarker) markerComponents!: QueryList<MapAdvancedMarker>;
 
   selectedDriver: DriverLocation | null = null;
@@ -41,6 +42,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
     disableDefaultUI: true,
   };
 
+  // Google Maps API 載入
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
@@ -61,6 +63,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
     document.head.appendChild(script);
   }
 
+  // Google Maps Marker 點擊事件綁定
   ngAfterViewInit() {
     // 監聽 Marker List 的變化，當資料更新重新渲染 Marker 時，重新綁定點擊事件
     this.markerComponents.changes.subscribe(() => {
@@ -68,6 +71,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  // Google Maps Marker 點擊事件綁定
   private bindMarkerEvents() {
     // 清除舊的監聽（避免記憶體洩漏）
     this.markerSubscriptions.forEach((s) => s.unsubscribe());
@@ -87,7 +91,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
+  // Google Maps InfoWindow 開啟
   openInfoWindow(marker: MapAdvancedMarker, driver: DriverLocation) {
     this.selectedDriver = driver;
     this.infoWindow.open(marker);
@@ -95,8 +99,10 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  // 根據司機狀態回傳不同的 Marker 樣式
   getAdvancedMarkerOptions(status: string): google.maps.marker.AdvancedMarkerElementOptions {
     let color = '#38bdf8';
+
     if (status === 'warning') color = '#f87171';
     if (status === 'idle') color = '#fbbf24';
 
@@ -113,6 +119,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
     return { content: glyph, title: 'Click for details' };
   }
 
+  // 清理訂閱
   ngOnDestroy() {
     this.markerSubscriptions.forEach((s) => s.unsubscribe());
   }
