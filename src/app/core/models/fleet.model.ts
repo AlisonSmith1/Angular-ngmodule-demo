@@ -4,7 +4,7 @@ export interface DriverLocation {
   vehicleId: string;
   lat: number;
   lng: number;
-  status: 'active' | 'idle' | 'warning';
+  status: string;
   lastUpdated: Date;
   speed: number;
 }

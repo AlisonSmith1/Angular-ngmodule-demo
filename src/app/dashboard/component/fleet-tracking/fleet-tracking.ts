@@ -3,17 +3,19 @@ import {
   Input,
   ChangeDetectionStrategy,
   OnInit,
+  AfterViewInit,
+  OnDestroy,
+  OnChanges,
   ChangeDetectorRef,
   ViewChild,
   ViewChildren,
   QueryList,
-  AfterViewInit,
-  OnDestroy,
+  SimpleChanges,
 } from '@angular/core';
-import { DriverLocation } from '../../../core/models/fleet.model';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { MapInfoWindow, MapAdvancedMarker } from '@angular/google-maps';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { DriverLocation } from '../../../core/models/fleet.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-fleet-tracking',
@@ -22,105 +24,130 @@ import { MapInfoWindow, MapAdvancedMarker } from '@angular/google-maps';
   styleUrl: './fleet-tracking.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
+export class FleetTracking implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() locations: DriverLocation[] | null = [];
-  // Google Maps InfoWindow 元件
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
-  // Google Maps AdvancedMarker 元件列表
   @ViewChildren(MapAdvancedMarker) markerComponents!: QueryList<MapAdvancedMarker>;
 
   selectedDriver: DriverLocation | null = null;
-  private markerSubscriptions: Subscription[] = [];
-
-  private apiLoadedSubject = new BehaviorSubject<boolean>(false);
-  apiLoaded$ = this.apiLoadedSubject.asObservable();
-
   center: google.maps.LatLngLiteral = { lat: 25.033, lng: 121.565 };
   zoom = 13;
   mapOptions: google.maps.MapOptions = {
-    mapId: '3a772d2e6bfbe585fb86c17d', // 💡 AdvancedMarker 必須有 MapId
+    mapId: '3a772d2e6bfbe585fb86c17d',
     disableDefaultUI: true,
   };
 
-  // Google Maps API 載入
+  private apiLoadedSubject = new BehaviorSubject<boolean>(false);
+  apiLoaded$ = this.apiLoadedSubject.asObservable();
+  private markerSubscriptions: Subscription[] = [];
+
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    if (typeof google !== 'undefined' && google.maps) {
-      this.apiLoadedSubject.next(true);
-      return;
-    }
-
-    (window as any).initMap = () => {
-      this.apiLoadedSubject.next(true);
-      this.cdr.detectChanges();
-    };
-
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleApiKey}&libraries=marker&callback=initMap&loading=async`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
+    this.initGoogleMapsApi();
   }
 
-  // Google Maps Marker 點擊事件綁定
+  ngOnChanges(changes: SimpleChanges) {
+    // 當數據變動且 API 已載入，同步更新標記
+    if (changes['locations'] && this.markerComponents && this.apiLoadedSubject.value) {
+      Promise.resolve().then(() => this.updateMarkerContent());
+    }
+  }
+
   ngAfterViewInit() {
-    // 監聽 Marker List 的變化，當資料更新重新渲染 Marker 時，重新綁定點擊事件
+    // 監聽 Marker 列表變化
     this.markerComponents.changes.subscribe(() => {
       this.bindMarkerEvents();
+      this.ensureMarkerContent();
+      this.updateMarkerContent();
     });
   }
 
-  // Google Maps Marker 點擊事件綁定
-  private bindMarkerEvents() {
-    // 清除舊的監聽（避免記憶體洩漏）
+  ngOnDestroy() {
     this.markerSubscriptions.forEach((s) => s.unsubscribe());
+  }
 
+  private ensureMarkerContent() {
     this.markerComponents.forEach((markerComp, index) => {
       const driver = this.locations?.[index];
-      if (!driver) return;
+      const am = markerComp.advancedMarker as google.maps.marker.AdvancedMarkerElement;
+      if (am && !am.content && driver) {
+        am.content = this.createMarkerDOM(driver.status);
+      }
+    });
+  }
 
-      // 取得原生 AdvancedMarkerElement 實例並註冊監聽
-      const advancedMarker = markerComp.advancedMarker as google.maps.marker.AdvancedMarkerElement;
+  /** 更新現有標記的顏色與位置 */
+  private updateMarkerContent() {
+    if (!this.locations || !this.markerComponents) return;
 
-      if (advancedMarker) {
-        // 使用 Google Maps 官方推薦的 addListener
-        advancedMarker.addListener('click', () => {
-          this.openInfoWindow(markerComp, driver);
+    this.markerComponents.forEach((markerComp, index) => {
+      const driver = this.locations![index];
+      const am = markerComp.advancedMarker as google.maps.marker.AdvancedMarkerElement;
+
+      if (am && am.content instanceof HTMLElement && driver) {
+        const dot = am.content.querySelector('.dot-inner') as HTMLElement;
+        if (dot) {
+          const newColor = this.getStatusColor(driver.status);
+          dot.style.backgroundColor = newColor;
+          dot.style.boxShadow = `0 0 15px ${newColor}`;
+        }
+        // 同步位置
+        am.position = { lat: driver.lat, lng: driver.lng };
+      }
+    });
+    this.cdr.markForCheck();
+  }
+
+  private bindMarkerEvents() {
+    this.markerSubscriptions.forEach((s) => s.unsubscribe());
+    this.markerComponents.forEach((markerComp, index) => {
+      const driver = this.locations?.[index];
+      const am = markerComp.advancedMarker as google.maps.marker.AdvancedMarkerElement;
+      if (am && driver) {
+        am.addListener('click', () => {
+          this.selectedDriver = driver;
+          this.infoWindow.open(markerComp);
+          this.cdr.markForCheck();
         });
       }
     });
   }
-  // Google Maps InfoWindow 開啟
-  openInfoWindow(marker: MapAdvancedMarker, driver: DriverLocation) {
-    this.selectedDriver = driver;
-    this.infoWindow.open(marker);
 
-    this.cdr.markForCheck();
+  private getStatusColor(status: string): string {
+    const palette: Record<string, string> = {
+      warning: '#f87171',
+      idle: '#fbbf24',
+      active: '#38bdf8',
+    };
+    return palette[status] || palette['active'];
   }
 
-  // 根據司機狀態回傳不同的 Marker 樣式
-  getAdvancedMarkerOptions(status: string): google.maps.marker.AdvancedMarkerElementOptions {
-    let color = '#38bdf8';
-
-    if (status === 'warning') color = '#f87171';
-    if (status === 'idle') color = '#fbbf24';
-
-    const glyph = document.createElement('div');
-    glyph.className = 'custom-marker';
-    glyph.style.pointerEvents = 'none'; // 讓點擊穿透到底層 Marker 實例
-    glyph.innerHTML = `
-      <div style="
+  private createMarkerDOM(status: string): HTMLElement {
+    const color = this.getStatusColor(status);
+    const div = document.createElement('div');
+    div.className = 'custom-marker-wrapper';
+    div.innerHTML = `
+      <div class="dot-inner" style="
         width: 16px; height: 16px; background-color: ${color}; 
         border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 15px ${color};
-      "></div>
-    `;
-
-    return { content: glyph, title: 'Click for details' };
+        transition: background-color 0.3s ease;">
+      </div>`;
+    return div;
   }
 
-  // 清理訂閱
-  ngOnDestroy() {
-    this.markerSubscriptions.forEach((s) => s.unsubscribe());
+  private initGoogleMapsApi() {
+    if (typeof google !== 'undefined' && google.maps) {
+      this.apiLoadedSubject.next(true);
+      return;
+    }
+    (window as any).initMap = () => {
+      this.apiLoadedSubject.next(true);
+      this.cdr.detectChanges();
+    };
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleApiKey}&libraries=marker&callback=initMap&loading=async`;
+    script.async = true;
+    document.head.appendChild(script);
   }
 }

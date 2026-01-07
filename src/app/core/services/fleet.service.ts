@@ -1,4 +1,3 @@
-// src/app/core/services/fleet.service.ts
 import { Injectable } from '@angular/core';
 import { Observable, map, startWith } from 'rxjs';
 
@@ -12,26 +11,46 @@ export class FleetService {
 
   constructor(private dashboardService: DashboardService) {}
 
-  getLiveDriverLocations(): Observable<DriverLocation[]> {
+  getFleetUpdates(): Observable<DriverLocation[]> {
     return this.dashboardService.getActivityStream().pipe(
-      map((latestLog: any) => {
-        this.currentDrivers = this.currentDrivers.map((driver) => {
-          if (driver.status === 'active') {
-            driver = {
-              ...driver,
-              lat: driver.lat + (Math.random() - 0.5) * 0.001,
-              lng: driver.lng + (Math.random() - 0.5) * 0.001,
-              speed: 40 + Math.floor(Math.random() * 20),
-              lastUpdated: new Date(),
-            };
-          }
+      map((log: any) => {
+        // success -> active
+        // danger / warning -> warning
+        // info -> idle
+        let mappedStatus: 'active' | 'warning' | 'idle' = 'idle';
 
-          return driver;
+        if (log) {
+          switch (log.type) {
+            case 'success':
+              mappedStatus = 'active';
+              break;
+            case 'danger':
+            case 'warning':
+              mappedStatus = 'warning';
+              break;
+            case 'info':
+              mappedStatus = 'idle';
+              break;
+            default:
+              mappedStatus = 'active';
+          }
+        }
+
+        this.currentDrivers = this.currentDrivers.map((driver) => {
+          const isTarget = Math.random() > 0.7;
+
+          return {
+            ...driver,
+            status: isTarget ? mappedStatus : driver.status,
+            lat: driver.lat + (driver.status === 'idle' ? 0 : (Math.random() - 0.5) * 0.001),
+            lng: driver.lng + (driver.status === 'idle' ? 0 : (Math.random() - 0.5) * 0.001),
+            speed: driver.status === 'idle' ? 0 : 40 + Math.floor(Math.random() * 20),
+            lastUpdated: new Date(),
+          };
         });
 
         return [...this.currentDrivers];
       }),
-
       startWith([...this.currentDrivers])
     );
   }

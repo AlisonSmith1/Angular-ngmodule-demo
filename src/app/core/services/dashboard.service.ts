@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { interval, map, Observable, startWith, shareReplay, Subject, scan } from 'rxjs';
 
 import { DashboardStats, ActivityLog } from '../models/dashboard.model'; // 模型
+import { DriverLocation } from '../models/fleet.model'; // 模型
 import { DRIVER_DATA } from '../../data/driver'; // 初始資料
 import { ACTIVITY_MESSAGES } from '../../data/activity'; // 初始資料
 
@@ -33,22 +34,16 @@ export class DashboardService {
   }
 
   // 上方card片的數據
-  getStats(): Observable<DashboardStats> {
-    return this.activityStream$.pipe(
-      map((latestLog) => {
-        const activeCount = DRIVER_DATA.filter((d) => d.status === 'active').length;
+  getStats(drivers: DriverLocation[], latestLog: ActivityLog): DashboardStats {
+    // 💡 直接從 fleetService 已經改好的狀態裡去算數量
+    const activeCount = drivers.filter((d) => d.status === 'active').length;
+    const warningCount = drivers.filter((d) => d.status === 'warning').length;
 
-        const alertModifier = latestLog.type === 'danger' ? 12 : 5;
-
-        const avgDeliveryTime = latestLog.type === 'warning' ? 30 : 25;
-
-        return {
-          totalOrders: 150,
-          driversEnRoute: activeCount,
-          pendingAlerts: alertModifier,
-          avgDeliveryTime: avgDeliveryTime,
-        };
-      })
-    );
+    return {
+      totalOrders: 150,
+      driversEnRoute: activeCount, // 同步 FleetService 的結果
+      pendingAlerts: warningCount > 0 ? 12 : 5, // 如果地圖上有警告，卡片數值就跳動
+      avgDeliveryTime: warningCount > 0 ? 30 : 25,
+    };
   }
 }
