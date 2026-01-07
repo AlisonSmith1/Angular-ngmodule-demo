@@ -62,7 +62,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // 💡 監聽 Marker List 的變化，當資料更新重新渲染 Marker 時，重新綁定點擊事件
+    // 監聽 Marker List 的變化，當資料更新重新渲染 Marker 時，重新綁定點擊事件
     this.markerComponents.changes.subscribe(() => {
       this.bindMarkerEvents();
     });
@@ -76,7 +76,7 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
       const driver = this.locations?.[index];
       if (!driver) return;
 
-      // 💡 取得原生 AdvancedMarkerElement 實例並註冊監聽
+      // 取得原生 AdvancedMarkerElement 實例並註冊監聽
       const advancedMarker = markerComp.advancedMarker as google.maps.marker.AdvancedMarkerElement;
 
       if (advancedMarker) {
@@ -92,18 +92,17 @@ export class FleetTracking implements OnInit, AfterViewInit, OnDestroy {
     this.selectedDriver = driver;
     this.infoWindow.open(marker);
 
-    // 💡 因為是 OnPush 模式，開啟視窗後要手動通知更新
     this.cdr.markForCheck();
   }
 
   getAdvancedMarkerOptions(status: string): google.maps.marker.AdvancedMarkerElementOptions {
-    let color = '#38bdf8'; // 配合你的亮藍霧感
+    let color = '#38bdf8';
     if (status === 'warning') color = '#f87171';
     if (status === 'idle') color = '#fbbf24';
 
     const glyph = document.createElement('div');
-    glyph.className = 'custom-marker'; // 💡 加上 class 方便 CSS 處理
-    glyph.style.pointerEvents = 'none'; // 💡 重要：讓點擊穿透到底層 Marker 實例
+    glyph.className = 'custom-marker';
+    glyph.style.pointerEvents = 'none'; // 讓點擊穿透到底層 Marker 實例
     glyph.innerHTML = `
       <div style="
         width: 16px; height: 16px; background-color: ${color}; 

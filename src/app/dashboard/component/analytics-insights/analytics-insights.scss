@@ -31,6 +31,12 @@
     }
   }
 
+  .mini-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .ai-recommendation {
     background: rgba(56, 189, 248, 0.05);
     border-left: 3px solid #38bdf8;

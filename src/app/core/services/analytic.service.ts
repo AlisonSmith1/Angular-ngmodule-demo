@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, scan, shareReplay, startWith } from 'rxjs';
 
-import { FleetService } from './fleet.service';
 import { AnalyticData } from '../models/analytic.model'; // 模型
 import { DashboardService } from './dashboard.service';
 
@@ -12,7 +11,7 @@ export class AnalyticService {
   private history: number[] = [];
   private readonly INITIAL_SCORE = 92.4;
 
-  constructor(private fleetService: FleetService, private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService) {}
 
   private formatAnalyticData(currentScore: number): AnalyticData {
     this.history.push(currentScore);

@@ -49,6 +49,7 @@
   min-height: 380px !important;
 }
 
+/* 地圖內部容器修正 */
 ::ng-deep .gm-style-iw-c {
   background-color: transparent !important;
   box-shadow: none !important;
@@ -56,6 +57,7 @@
   padding: 0 !important;
 }
 
+/* 資訊視窗內容容器*/
 ::ng-deep .gm-style-iw-d {
   overflow: visible !important;
   background: rgba(15, 23, 42, 0.4) !important;
@@ -65,14 +67,13 @@
   padding: 0 !important;
 }
 
-/* 💡 隱藏下方白色小箭頭 (或使其透明) */
+/* 移除 InfoWindow 預設白色外殼與陰影 */
 ::ng-deep .gm-style-iw-tc::after {
   background: rgba(15, 23, 42, 0.4) !important;
   backdrop-filter: blur(12px) !important;
   box-shadow: none !important;
 }
 
-/* 💡 關閉按鈕重新定位與美化 */
 ::ng-deep .gm-ui-hover-effect {
   top: 8px !important;
   right: 8px !important;
