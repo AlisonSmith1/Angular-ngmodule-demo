@@ -15,8 +15,11 @@
     background: var(--glass-bg);
     border: 1px solid var(--primary-blue);
     color: var(--primary-blue);
-    position: relative;
+    position: absolute;
     overflow: hidden;
+    top: 31%;
+    right: 3.5%;
+    z-index: 10;
 
     &.syncing {
       color: #38bdf8;
