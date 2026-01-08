@@ -1,56 +1,84 @@
-<div class="analyticInsights">
-  <h3>ANALYTICS & INSIGHTS</h3>
-  <span class="tag" [class.syncing]="true">REAL-TIME</span>
+<div>
+  <div class="analyticInsights">
+    <h3>ANALYTICS & INSIGHTS</h3>
+    <span class="tag" [class.syncing]="true">REAL-TIME</span>
 
-  <div class="card3">
-    @if (stats$ | async; as data) {
-    <div class="insight-card">
-      <div class="metric">
-        <span class="label">Efficiency Score</span>
-        <span class="value" [class]="data.status">{{ data.score }}</span>
-        <span class="trend" [class.up]="data.isUpward" [class.down]="!data.isUpward">
-          {{ data.isUpward ? '↑' : '↓' }} {{ data.trendPercentage }}%
-        </span>
-      </div>
+    <div class="card3">
+      @if (stats$ | async; as data) {
+      <div class="insight-card">
+        <div class="metric">
+          <span class="label">Efficiency Score</span>
+          <span class="value" [class]="data.status">{{ data.score }}</span>
+          <span class="trend" [class.up]="data.isUpward" [class.down]="!data.isUpward">
+            {{ data.isUpward ? '↑' : '↓' }} {{ data.trendPercentage }}%
+          </span>
+        </div>
 
-      <div class="mini-chart">
-        <div class="svg-chart-container">
-          <svg width="150" height="150" viewBox="0 0 150 150">
-            <circle
-              class="bg"
-              cx="75"
-              cy="75"
-              r="60"
-              fill="transparent"
-              stroke="rgba(255,255,255,0.1)"
-              stroke-width="12"
-            ></circle>
+        <div class="mini-chart">
+          <div class="svg-chart-container">
+            <svg width="200" height="200" viewBox="0 0 150 150">
+              <circle
+                class="bg"
+                cx="75"
+                cy="75"
+                r="60"
+                fill="transparent"
+                stroke="rgba(255,255,255,0.1)"
+                stroke-width="12"
+              ></circle>
 
-            <circle
-              class="progress"
-              cx="75"
-              cy="75"
-              r="60"
-              fill="transparent"
-              [attr.stroke]="getStatusColor(data.status)"
-              stroke-width="12"
-              stroke-linecap="round"
-              [style.stroke-dashoffset]="calculateOffset(data.score)"
-              stroke-dasharray="377"
-            ></circle>
-          </svg>
+              <circle
+                class="progress"
+                cx="75"
+                cy="75"
+                r="60"
+                fill="transparent"
+                [attr.stroke]="getStatusColor(data.status)"
+                stroke-width="12"
+                stroke-linecap="round"
+                [style.stroke-dashoffset]="calculateOffset(data.score)"
+                stroke-dasharray="377"
+              ></circle>
+            </svg>
+          </div>
+          <div class="svg-chart-container">
+            <svg width="200" height="200" viewBox="0 0 150 150">
+              <circle
+                class="bg"
+                cx="75"
+                cy="75"
+                r="60"
+                fill="transparent"
+                stroke="rgba(255,255,255,0.1)"
+                stroke-width="12"
+              ></circle>
+
+              <circle
+                class="progress"
+                cx="75"
+                cy="75"
+                r="60"
+                fill="transparent"
+                [attr.stroke]="getStatusColor(data.status)"
+                stroke-width="12"
+                stroke-linecap="round"
+                [style.stroke-dashoffset]="calculateOffset(data.score)"
+                stroke-dasharray="377"
+              ></circle>
+            </svg>
+          </div>
+        </div>
+
+        <hr class="misty-line" />
+
+        <div class="ai-recommendation" [class]="data.status">
+          <i class="ai-icon"></i>
+          <p>{{ recommendation$ | async }}</p>
         </div>
       </div>
-
-      <hr class="misty-line" />
-
-      <div class="ai-recommendation" [class]="data.status">
-        <i class="ai-icon"></i>
-        <p>{{ recommendation$ | async }}</p>
-      </div>
+      } @else {
+      <div class="loading-overlay">正在分析神經網路數據...</div>
+      }
     </div>
-    } @else {
-    <div class="loading-overlay">正在分析神經網路數據...</div>
-    }
   </div>
 </div>

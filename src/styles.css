@@ -52,7 +52,7 @@ h3 {
   background-color: var(--bg-card);
   backdrop-filter: blur(10px);
   border-radius: 15px;
-
+  height: 100%;
   z-index: 0;
 }
 
@@ -67,11 +67,16 @@ h3 {
   background-color: var(--bg-card);
   border: 2px solid var(--glass-border);
   border-radius: 15px;
+  height: 100%;
 }
 
 .card2 {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  padding: 30px;
+  padding: 30px 50px 0px 50px;
   background: #12151a;
   backdrop-filter: blur(10px);
   border-radius: 15px;
@@ -79,7 +84,7 @@ h3 {
 }
 
 .card3 {
-  height: 700px;
+  height: 1000px;
   position: relative;
   padding: 30px;
   background-color: var(--bg-card);
@@ -94,6 +99,7 @@ h3 {
   backdrop-filter: blur(10px);
   border-radius: 15px;
   z-index: 0;
+  height: 100%;
 }
 
 .card::before,
@@ -109,6 +115,5 @@ h3 {
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-
   z-index: -1;
 }

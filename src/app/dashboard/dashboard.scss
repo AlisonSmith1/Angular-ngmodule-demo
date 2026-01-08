@@ -23,7 +23,6 @@
 
     .activity,
     .fleet {
-      height: 100%;
       overflow: hidden;
     }
 
@@ -38,6 +37,7 @@
     }
 
     .analytics {
+      height: 1000px;
       grid-column: 3 / 3;
       grid-row: 1 / 3;
     }

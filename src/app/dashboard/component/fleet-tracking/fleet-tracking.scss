@@ -3,43 +3,57 @@
   height: 100%;
 }
 
-.fleet-tracking {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+div {
   height: 100%;
 
-  .header-section {
-    padding: 0px 20px;
+  .fleet-tracking {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 90%;
 
-    .badge {
-      background: var(--glass-bg);
-      color: var(--primary-blue);
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.5rem;
-      border: 1px solid var(--primary-blue);
-      animation: pulse 2s infinite;
-      position: absolute;
-      top: 40px;
-      right: 50px;
+    .header-section {
+      padding: 0px 10px;
+      height: auto;
+
+      h3 {
+        position: relative;
+      }
+
+      .badge {
+        background: var(--glass-bg);
+        color: var(--primary-blue);
+        padding: 2px 8px;
+        height: auto;
+        width: auto;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        border: 1px solid var(--primary-blue);
+        animation: pulse 2s infinite;
+        position: absolute;
+        top: 40px;
+        right: 50px;
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 700;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.8;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
     }
 
-    @keyframes pulse {
-      0%,
-      100% {
-        opacity: 0.8;
-      }
-      50% {
-        opacity: 1;
-      }
+    .map-container {
+      flex: 1;
+      height: 100%;
+      width: 100%;
     }
-  }
-
-  .map-container {
-    flex: 1;
-    height: 100%;
-    width: 100%;
   }
 }
 
